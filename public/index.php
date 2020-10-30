@@ -71,8 +71,8 @@ $app->addRoutingMiddleware();
 
 // Add Error Middleware
 
-$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
+//$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
+//$errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 
 //var_dump($_ENV);die;
