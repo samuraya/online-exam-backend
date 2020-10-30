@@ -69,7 +69,7 @@ final class UserService
 
 	public function login(Request $request):array
 	{
-		exit("Doneeeeeeee");
+		
 		$data = $request->getParsedBody();
 var_dump($data); die;
 		$username = $data['user_id'] ?? FALSE;
