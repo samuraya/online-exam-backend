@@ -19,7 +19,7 @@ class ViewUserAction extends UserAction
 
     protected function action(): Response
     {
-       
+       exit("view user action controller");
         $this->logger->info("single user was viewed.");
         return $this->respondWithData($this->viewUser());       
     }
