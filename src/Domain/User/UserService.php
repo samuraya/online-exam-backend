@@ -71,6 +71,7 @@ final class UserService
 	{
 		
 		$data = $request->getParsedBody();
+var_dump($data);
 		$username = $data['user_id'] ?? FALSE;
 
 		if($username){
