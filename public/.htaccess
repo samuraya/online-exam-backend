@@ -16,7 +16,7 @@
   # absolute physical path to the directory that contains this htaccess file.
   # RewriteBase /
 
-  <Directory "uploads/">
+  <Directory /uploads>
     Allow from all
   </Directory>
 
