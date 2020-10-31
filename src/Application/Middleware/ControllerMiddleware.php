@@ -56,12 +56,12 @@ class ControllerMiddleware implements Middleware
         /*
 			redirect to login if client tries to access with authorized session from different device and location
 		*/
-		if(ClientFingerprint::process()===false) {
+		// if(ClientFingerprint::process()===false) {
             
-            $response = $responseFactory
-            	->createResponse(307,"client fingerprint mismatch");
-            return $response->withHeader('Location', '/api/');
-        }
+  //           $response = $responseFactory
+  //           	->createResponse(307,"client fingerprint mismatch");
+  //           return $response->withHeader('Location', '/api/');
+  //       }
 
         if($token){
             if($this->matchToken($token)){
