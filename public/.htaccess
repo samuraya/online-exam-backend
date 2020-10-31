@@ -16,10 +16,13 @@
   # absolute physical path to the directory that contains this htaccess file.
   # RewriteBase /
 
+  <Directory "uploads/">
+    Allow from all
+  </Directory>
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ index.php [QSA,L]
 
-  RewriteCond %{REQUEST_URI} !\.(png|jpg|jpeg|gif)$
-  RewriteRule .*$ - [F]
+
 
 </IfModule>
