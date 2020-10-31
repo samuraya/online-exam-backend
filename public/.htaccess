@@ -16,11 +16,10 @@
   # absolute physical path to the directory that contains this htaccess file.
   # RewriteBase /
 
-  RewriteCond %{REQUEST_URI} !\.(png|jpg|jpeg|gif)$
-  RewriteRule .*$ - [F]
-
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ index.php [QSA,L]
 
+  RewriteCond %{REQUEST_URI} !\.(png|jpg|jpeg|gif)$
+  RewriteRule .*$ - [F]
 
 </IfModule>
