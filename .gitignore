@@ -30,6 +30,8 @@
 *.gif
 *.tiff
 *.ico
+*.jpeg
+*.JPG
 !default.jpeg
 
 
