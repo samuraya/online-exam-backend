@@ -7,6 +7,7 @@ use App\Infrastructure\Persistence\Finder;
 
 use App\Domain\Answer\AnswerNotFoundException;
 use App\Infrastructure\Persistence\BaseRepository;
+use App\Domain\DomainException\DomainRecordNotFoundException;
 
 
 class AnswerRepository extends BaseRepository
@@ -30,7 +31,7 @@ class AnswerRepository extends BaseRepository
       $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       if($rows==false || empty($rows)){
-        throw new AnswerNotFoundException();
+        $rows = [];
       }   
       return $rows;
     }

@@ -19,7 +19,6 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
  		$this->table = 'subject';
  		parent::__construct($connection);
  	}
-
  
  	public function findSubjectsByInstructor($instructorId)
  	{
@@ -36,37 +35,4 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
  		}
         return $rows;
  	}
-/*
-	public function joinSubjectExam():void
-	{
-		$sql = " SELECT exam.id as exam_id,"
-		." exam.name as exam_name,subject.id as subject_id,subject.name as subject"
-		." FROM subject JOIN exam"
-		." ON exam.subject_id = subject.id"
-		." WHERE subject.instructor_id = ?"
-		." AND exam.is_active = ?";
-		
-		$this->sql = $sql;
-		
-	}
-
-	public function joinSubjectExamEnrolled():void
-	{
-		$sql = "SELECT exam.id as exam_id,"
-		." exam.name as exam_name,subject.id as subject_id,subject.name as subject"
-		." FROM subject JOIN exam"
-		." ON exam.subject_id = subject.id"
-		." JOIN enrolled"
-		." ON enrolled.subject_id = subject.id"
-		." WHERE enrolled.student_id = ?"
-		." AND exam.is_active = ?";
-
-		$this->sql = $sql;
-		
-		
-	}
-*/
-						
-
-
 }

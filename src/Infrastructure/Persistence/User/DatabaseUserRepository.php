@@ -25,7 +25,6 @@ class DatabaseUserRepository extends BaseRepository implements UserRepository
  		parent::__construct($connection);
  	}
 
-
  	public function insertUser(User $user):int
  	{
  		$id = -1;
@@ -51,15 +50,15 @@ class DatabaseUserRepository extends BaseRepository implements UserRepository
  	{
  		
  		$sql = 'SELECT * FROM ' . $this->table.' WHERE user_id = ?';
-//exit($id);
+
 		$stmt = $this->connection->prepare($sql);			
 		$stmt->execute([$id]);
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	//exit($row['user_id']);
+	
 		
 		if ($row===false) {
             return false;
-            //throw new UserNotFoundException();
+            
         }
 
         return new User(
@@ -67,12 +66,6 @@ class DatabaseUserRepository extends BaseRepository implements UserRepository
         		(int)$row['user_id'],
         		(string)$row['password'],
         		(int)$row['level']);
-       //var_dump($user); die;
-        //return $user;
-
-
-
-
  	}
 
 

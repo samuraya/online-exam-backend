@@ -3,9 +3,7 @@
 namespace App\Application\Helpers;
 
 class ClientFingerprint
-{
-
-	
+{	
 	private const SESSION_KEY = 'fingerprint';
 		
 	private static $incomingFingerprint;  //HTTP headers: hash of ip and useragent

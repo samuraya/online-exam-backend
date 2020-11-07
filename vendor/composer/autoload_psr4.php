@@ -40,6 +40,7 @@ return array(
     'Selective\\Validation\\' => array($vendorDir . '/selective/validation/src'),
     'Seld\\PharUtils\\' => array($vendorDir . '/seld/phar-utils/src'),
     'Seld\\JsonLint\\' => array($vendorDir . '/seld/jsonlint/src/Seld/JsonLint'),
+    'Root\\' => array($baseDir . '/'),
     'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
     'Respect\\Stringifier\\' => array($vendorDir . '/respect/stringifier/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),

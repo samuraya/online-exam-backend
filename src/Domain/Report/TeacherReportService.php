@@ -5,18 +5,8 @@ namespace App\Domain\Report;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-// use App\Domain\Subject\Subject;
-// use App\Domain\Question\Question;
-
-// use App\Domain\Subject\SubjectNotFoundException;
 use App\Infrastructure\Persistence\Report\ReportRepository;
-// use \UnexpectedValueException;
-// use Respect\Validation\Validator as v;
-// use Respect\Validation\Exceptions\NestedValidationException;
-
-//use App\Infrastructure\Persistence\Subject\TeacherReportRepository;
-
-
+use App\Domain\DomainException\DomainBadRequestException;
 
 final class TeacherReportService 
 {
@@ -34,15 +24,11 @@ final class TeacherReportService
 	public function reportAllStudentsByExam(Request $request)
 	{
  				
-		//$data = $request->getParsedBody();
-		$examId = $request->getAttribute('examId');
-		//$userId = $_SESSION['user_id'];
+		$examId = $request->getAttribute('examId');		
 
 		$results = $this->reportRepository->instructorReportByExamAllStudents($examId);
 
-		$results = $this->calculatePercentCorrect($results);
-
-		//var_dump($results);
+		$results = $this->calculatePercentCorrect($results);		
 
 		$code = 202;
 		return array('students'=>$results,'status_code'=>$code);
@@ -52,27 +38,21 @@ final class TeacherReportService
 
 	public function reportDetailsOneStudent(Request $request)
 	{
-
-
-		//$data = $request->getParsedBody();
+		
 		$studentId = $request->getAttribute('studentId');
-		$examId = $request->getAttribute('examId');
-		//var_dump($studentId,$examId); die;
+		$examId = $request->getAttribute('examId');		
 
 		$results = $this->reportRepository->instructorReportOneStudent($studentId, $examId);
 
 		$code = 202;
 		return array('student'=>$results,'status_code'=>$code);
-
-
-
 	}
 
 	private function calculatePercentCorrect($rows)
 	{
 		$newRows = [];
 		foreach($rows as $row){
-			$percent =(int)$row['Correct'] / ((int)$row['Correct']+(int)$row['Wrong']);
+			$percent =(int)$row['Correct'] / ((int)$row['Correct']+(int)$row['Wrong'])*(100);
 			$row['Percent'] = $percent;
 			array_push($newRows, $row);
 		}

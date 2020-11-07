@@ -7,6 +7,7 @@ use App\Infrastructure\Persistence\Finder;
 
 use App\Domain\Exam\ExamNotFoundException;
 use App\Infrastructure\Persistence\BaseRepository;
+use App\Domain\DomainException\DomainBadRequestException;
 
 class ExamRepository extends BaseRepository
 {
@@ -24,20 +25,14 @@ class ExamRepository extends BaseRepository
  	{
  		$sql = "UPDATE " .$this->table
             ." SET is_active = '0'"
-            ." WHERE id = ?";
-
-        //var_dump($sql, $examId); die;
+            ." WHERE id = ?";   
 
         $result = $this->flush($sql, array($examId));
-
-        if($result===true){
-           
+        if($result===true){           
             return $this->findById($examId);
         }
-        throw new \Exception("Error while updating the record", 1);  
+        throw new DomainBadRequestException("Error while updating the record");  
  	}
-
-
 
 	public function studentExams($studentId, $isActive = 1)
 	{	
@@ -54,7 +49,6 @@ class ExamRepository extends BaseRepository
         return $rows;
 
 	}
-
 
 	public function instructorExams($instructorId, $isActive = 1)
 	{

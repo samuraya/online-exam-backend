@@ -8,11 +8,11 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Question\Question;
 use App\Domain\Choice\ChoiceService;
 
-
 use App\Domain\Exam\ExamNotFoundException;
 use App\Domain\Question\QuestionNotFoundException;
 use App\Infrastructure\Persistence\Question\QuestionRepository;
-//use App\Infrastructure\Persistence\Exam\QuestionWriteRepository;
+use App\Domain\DomainException\DomainBadRequestException;
+
 use \UnexpectedValueException;
 use App\Domain\Exam\ExamService;
 
@@ -25,8 +25,6 @@ final class QuestionService
 {
 	
 	private $questionRepository;
-	//private $examRepository;
-	
 
 	public function __construct(
 		QuestionRepository $questionRepository,
@@ -44,65 +42,54 @@ final class QuestionService
 	{
 		
 		if($_SESSION['level']!==1) {
-			throw new \Exception(__METHOD__.": user not allowed to write to exam", 1);
+			throw new DomainBadRequestException("user not allowed to write to exam");
 		}
 					
-		$data = $request->getParsedBody();
-
-		//$this->validateQuestion($data);
+		$data = $request->getParsedBody();	
 		
 
-			$questions = [];
-			$choicesWritten = [];
+		$questions = [];
+		$choicesWritten = [];
 
-			foreach ($data as $question) {
-				//$this->validateQuestion($question);
-				$id = $question['id'] ?? null;
-				$examId = $question['exam_id'];
-				$content = $question['content'];
-				$status = $question['is_active'] ?? 1;
-				$choices = $question['choices']??false;
+		foreach ($data as $question) {			
+			$id = $question['id'] ?? null;
+			$examId = $question['exam_id'];
+			$content = $question['content'];
+			$status = $question['is_active'] ?? 1;
+			$choices = $question['choices']??false;
 
-				
-				
-				$question = new Question(
-					$id,
-					$examId,
-					$content,
-					$status
-				);
 			
 			
-				$question = $this->questionRepository->save($question);
+			$question = new Question(
+				$id,
+				$examId,
+				$content,
+				$status
+			);
+		
+		
+			$question = $this->questionRepository->save($question);
 
 
-				$question = $question[0];
+			$question = $question[0];
+		
+			$questions[] = $question;
 			
-				$questions[] = $question;
-				
-				if($choices!== false){
+			if($choices!== false){
 
-					$choices = $this->choiceService->persist($choices,$question['id']);
+				$choices = $this->choiceService->persist($choices,$question['id']);	
 
-					//var_dump($choices); die;
+				$choicesWritten[]=$choices;
 
-					$choicesWritten[]=$choices;
+			}
 
-				}
-
-			}			
-			
-			//var_dump($questions); die;
-			//$body = array();
+		}			
 			$code = 200;
 			return array(
 				'questions'=>$questions,
 				'choices'=>$choicesWritten,
 				'status_code'=>$code
 			);
-
-				
-
 	}
 
 
@@ -124,7 +111,7 @@ final class QuestionService
 			if($exam['exam_id']==$examId) $examFound = true;
 		}
 		if($examFound===false){
-			throw new \Exception("Not allowed to see this examId", 1);
+			throw new DomainBadRequestException("Not allowed to see this examId");
 		}
 					
 	/*	get the questions by exam id
@@ -176,41 +163,35 @@ final class QuestionService
         $questionId = $request->getAttribute('questionId') ?? false;
 
         $r = v::intVal()->validate($questionId??false);
-        if(!$r) throw new \Exception(__METHOD__.": choice id must be integer ", 1);
+        if(!$r) throw new DomainBadRequestException("choice id must be integer ");
         $result = $this->questionRepository->delete($questionId);
         if($result===false) {
         	return array('result'=>'not deleted','status_code'=>200); 
         }
 
-        return array('result'=>'deleted','status_code'=>200);   
-
-                
-
+        return array('result'=>'deleted','status_code'=>200);  
     }
-   
-
 
 	public function validateQuestion($data)
 	{
 		
 		$r = v::intVal()
 			->validate($data['id']??null);
-		if(!$r) throw new \Exception(__METHOD__.": question id must be integer ", 1);
+		if(!$r) throw new DomainBadRequestException("question id must be integer ");
 
 		$r = v::intVal()
 			->validate($data['exam_id']);
-		if(!$r) throw new \Exception(__METHOD__.": exam id must be given ", 1);
+		if(!$r) throw new DomainBadRequestException("exam id must be given ");
 
 		$r = v::stringType()
 			->notEmpty()
 			->validate($data['content']??false);
-		if(!$r) throw new \Exception(__METHOD__.": Question content must be given", 1);
+		if(!$r) throw new DomainBadRequestException("Question content must be given");
 		
 		$r = v::intVal()
 			->validate($data['is_active']??1);
-		if(!$r) throw new \Exception(__METHOD__.": question status must be given ", 1);
+		if(!$r) throw new DomainBadRequestException("question status must be given ");
 
 	}
-
 	
 }

@@ -13,7 +13,7 @@ abstract class UserAction extends Action
     /**
      * @var UserRepository
      */
-    //protected $userRepository;
+   
     protected $userService;
 
     /**
@@ -24,7 +24,6 @@ abstract class UserAction extends Action
         UserService $userService)
     {
         parent::__construct($logger);
-        //$this->userRepository = $userRepository;
         $this->userService = $userService;
     }
 }

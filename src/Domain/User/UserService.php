@@ -11,6 +11,8 @@ use App\Domain\User\UserRepository;
 use \UnexpectedValueException;
 use Slim\Exception\HttpBadRequestException;
 use App\Domain\DomainException\DomainUnauthorizedException;
+use App\Domain\DomainException\DomainBadRequestException;
+
 
 
 
@@ -25,7 +27,6 @@ final class UserService
 	{
 		$this->repository = $repository;
 	}
-
 
 	public function createUser(Request $request):array
 	{
@@ -49,7 +50,7 @@ final class UserService
 						
 			$userNew = $this->repository->insert($user);
 			if($userNew===false) {
-				throw new \Exception("Registration failed", 1);				
+				throw new DomainBadRequestException('Registration failed');			
 			}
 
 			$userNew = $userNew[0];
@@ -61,11 +62,9 @@ final class UserService
 			return array('user'=>$userNew,'status_code'=>$code);
 
 		}
-		throw new \Exception($request->getAttribute('validation'), 401);		
+		throw new DomainBadRequestException($request->getAttribute('validation'));
 		
-
 	}
-
 
 	public function login(Request $request):array
 	{
@@ -76,14 +75,14 @@ final class UserService
 
 		if($username){
 			$user = $this->repository->findUserOfId($username);
-			//var_dump(password_verify($data['password'], $user->getPassword())); die;				
+					
 			if($user){
 				if(password_verify($data['password'], $user->getPassword())) {
 					session_regenerate_id(true);
 					$this->setSession($user);
-					//$user->unset('password');
+					
 					$body = [
-						//'id'=>$user->getId(),
+						
 						'user_id'=>$user->getUserId(),
 						'level'=>$user->getLevel(),
 						'token'=>$_SESSION['token']
@@ -92,15 +91,14 @@ final class UserService
 
 					return array('user'=>$body,'status_code'=>$code);
 				}
-				//throw new DomainUnauthorizedException("Wrong login details");				
+							
 			}
 			throw new DomainUnauthorizedException("Wrong login details");	
 			
 		} 
-		throw new \Exception("no username given", 400);
+		throw new DomainBadRequestException('No user id given');
 
 	}
-
 
 	private function setSession($user):void
 	{		
@@ -121,7 +119,7 @@ final class UserService
 			$user = $this->repository->findUserOfId($userId);
 			
 			if($user){
-					//$user->unset('password');
+					
 					$body = [
 						'user_id'=>$user->getUserId(),
 						'level'=>$user->getLevel(),

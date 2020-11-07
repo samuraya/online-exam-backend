@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence;
 
 use App\Domain\BaseRepositoryInterface;
+use App\Domain\DomainException\DomainBadRequestException;
 use \PDO;
 
 
@@ -34,7 +35,7 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function insert($entity) //returns last inserted row or false
     {
-        //exit('inserting');
+        
         $data = $entity->jsonSerialize();
        
         $fields = implode(',',array_keys($data));
@@ -55,10 +56,10 @@ class BaseRepository implements BaseRepositoryInterface
 
     protected function flush($sql, $values, $where=''): bool
     {
-        //must return TRUE or FALSE
+        
         try {
             $stmt = $this->connection->prepare($sql);
-//var_dump($sql, $values); die;
+
             $stmt->execute($values);
             $success = TRUE;            
         
@@ -81,7 +82,6 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function update($entity):array  //returns last updated row or false
     {
-       //exit('updating');
         $data = $entity->jsonSerialize();
         $fields = array_keys($data);
         [$placeholders, $values] = $this->setPlaceholders($data);
@@ -98,15 +98,13 @@ class BaseRepository implements BaseRepositoryInterface
         $sql = 'UPDATE ' .$this->table.
             ' SET '.implode(',', $sets).
             ' WHERE id = ' . $entity->getId();
-//var_dump($sql,$sets); die;
-
         $result = $this->flush($sql, $values);
 
         if($result===true){
            
             return $this->findById($entity->getId());
         }
-        throw new \Exception("Error while updating the record", 1);  
+        throw new DomainBadRequestException("Error while updating the record");  
 
 
    }
@@ -144,7 +142,7 @@ class BaseRepository implements BaseRepositoryInterface
     public function findAll()   //all records from one table
     {
         $sql = 'SELECT * FROM ' . $this->table;
-        //$this->sql = $sql;
+        
         $stmt = $this->connection->prepare($sql);           
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -161,7 +159,7 @@ class BaseRepository implements BaseRepositoryInterface
 
         if($rows!==false) return $rows;
 
-        throw new \Exception(__METHOD__." : Failed to find", 1);
+        throw new DomainBadRequestException("Failed to find");
         
     }
 }

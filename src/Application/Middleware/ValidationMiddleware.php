@@ -24,17 +24,17 @@ class ValidationMiddleware implements Middleware
 
 
         if (!$id && !$password) {
-        	//$errors['message']['error1']='please provide id and password';
+        	
             $errors.='Please provide id and password!';
         }
 
         if(strlen((string)$id) < 8 || !is_numeric($id)) {
-        	//$errors['message']['error2']='please make sure id is 8 digits long';
+        	
             $errors.='Please make sure id is at least 8 digits long!';
         }
     
         if(preg_match($passReg, $password)===0){
-        	//$errors['message']['error3']= "password must be between 5 to 15 characters which contain at least one numeric digit and a specialcharacter!";
+        	
             $errors.= "Password must be between 5 to 15 characters which contain at least one numeric digit and a specialcharacter!";
         }
        

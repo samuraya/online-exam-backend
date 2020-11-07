@@ -6,11 +6,8 @@ namespace App\Domain\Answer;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Domain\Answer\Answer;
-
-
 use App\Domain\Answer\AnswerNotFoundException;
 use App\Infrastructure\Persistence\Answer\AnswerRepository;
-//use App\Infrastructure\Persistence\Exam\AnswerWriteRepository;
 use \UnexpectedValueException;
 
 
@@ -18,8 +15,7 @@ use \UnexpectedValueException;
 final class AnswerService 
 {
     
-    private $answerRepository;
-    
+    private $answerRepository;    
 
     public function __construct(AnswerRepository $answerRepository)
     {
@@ -27,31 +23,25 @@ final class AnswerService
         
     }
 
-
     public function writeToAnswer(Request $request)
     {
         $body = 'validation failed';
         $code = 422;
         
         $userId = $_SESSION['user_id'] ?? FALSE;
-
-
         if($userId) {
-            
             $data = $request->getParsedBody();
 
             $answers = [];
             foreach ($data as $questionId=>$choiceId) {
-                $id = $answer['id'] ?? null;
-                 
+                $id = $answer['id'] ?? null;          
                 
                 $answer = new Answer(
                     $id,
                     $userId,
                     $questionId,
                     $choiceId
-                );
-              
+                );              
             
                 $answer = $this->answerRepository->save($answer);
 
@@ -81,8 +71,7 @@ final class AnswerService
         
         $code = 422;
         $questionId = $args['questionId'];
-        
-                
+                        
         try {
             $answers = $this->answerRepository
             ->findByQuestion($questionId);
@@ -90,22 +79,12 @@ final class AnswerService
         catch(QuestionNotFoundException $e) {
             return array('error'=>$e->message,'status_code'=>$code);
         }
-        //var_dump($answers); die;
-        $code = 200;
-        return array('answers'=>$answers,'status_code'=>$code);
-
         
-        //$validationFailMessage = $request->getAttribute('validation');
-        //$body = json_encode($validationFailMessage);
+        $code = 200;
+        return array('answers'=>$answers,'status_code'=>$code);        
+        
         return array('data'=>$body,'status_code'=>$code);
 
     
     }
-
-    // public function assembleExam(Request $request):array
-    // {
-
-    // }
-
-
 }

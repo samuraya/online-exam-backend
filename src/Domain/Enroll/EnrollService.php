@@ -8,9 +8,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Domain\Exam\ExamNotFoundException;
 use App\Infrastructure\Persistence\Enroll\EnrollRepository;
+use App\Domain\DomainException\DomainBadRequestException;
+
 use \UnexpectedValueException;
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
+
 
 
 
@@ -33,11 +36,11 @@ final class EnrollService
 		$subjectId = $request->getAttribute('subjectId')??false;
 				
 		if(!$subjectId) {
-			throw new \Exception("subject id not given", 1);
+			throw new DomainBadRequestException("subject id not given");
 		}
 
 		if(empty($uploadedFile['students'])) {
-			throw new \Exception("No file uploaded", 1);		
+			throw new DomainBadRequestException("No file uploaded");		
 		} 
 
 				
@@ -59,8 +62,6 @@ final class EnrollService
 			} catch(\Exception $e) {
 				continue;
 			}
-		//var_dump($enroll->jsonSerialize());
-
 		}
 		fclose($handle);
 
@@ -72,15 +73,9 @@ final class EnrollService
 
 	private function validateEnrollment($data)
 	{
-		//var_dump($data); die;
 		$r = v::alnum()
 			->length(8,10)
 			->validate($data[0]??false);
-		if(!$r) throw new \Exception(__METHOD__.": student Id must be 8-10 digits long ".$data[0], 1);
-		
-	}
-		
-
-
-	
+		if(!$r) throw new DomainBadRequestException("student Id must be 8-10 digits long ".$data[0]);		
+	}	
 }

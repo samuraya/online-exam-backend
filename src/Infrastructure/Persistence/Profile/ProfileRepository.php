@@ -33,9 +33,4 @@ class ProfileRepository extends BaseRepository
  		}
         return $rows;
  	}
-
-
-
-
-
 }

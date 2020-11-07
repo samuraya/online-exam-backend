@@ -5,6 +5,7 @@ namespace App\Application\Actions;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\DomainUnauthorizedException;
+use App\Domain\DomainException\DomainBadRequestException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -66,6 +67,8 @@ abstract class Action
             throw new HttpNotFoundException($this->request, $e->getMessage());
         } catch (DomainUnauthorizedException $e) {
             throw new HttpUnauthorizedException($this->request, $e->getMessage());       
+        } catch (DomainBadRequestException $e) {
+            throw new HttpBadRequestException($this->request, $e->getMessage());
         }
     }
 
@@ -127,27 +130,9 @@ abstract class Action
     protected function respond(ActionPayload $payload, $statusCode): Response
     {
         $json = json_encode($payload, JSON_PRETTY_PRINT);
-    
-        //$this->logger->info("MB memory used: ".memory_get_peak_usage()/1000000);
+            
         $this->response->getBody()->write($json);
     
         return $this->response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
-
-/***************PHP rendered pages*****************************
-     protected function respond(ActionPayload $payload, $statusCode): Response
-    {
-       // include "templates/home.phtml";
-        $renderer = new PhpRenderer('templates');
-       return $renderer->render($this->response, "hello.php",["name"=>"John"]);
-       // $this->response->getBody()->write($template);
-    
-        //return $this->response->withHeader('Content-Type', 'text/html')->withStatus($statusCode);
-    }
-*****************************************************************/
-
-
-
-
-
 }

@@ -11,9 +11,7 @@ class Choice implements JsonSerializable
     private $id;
     private $questionId;
     private $content;
-    private $isCorrect;
-
-         
+    private $isCorrect;         
 
     public function __construct(
             $id,
@@ -72,9 +70,6 @@ class Choice implements JsonSerializable
        $this->isCorrect=$isCorrect;
     }
 
-
-
-
     public function jsonSerialize()
     {
         return [
@@ -88,7 +83,7 @@ class Choice implements JsonSerializable
 
     public function unset($prop):void
     {
-       // echo $this->$prop;
+       
         $this->$prop = null;
     }
     

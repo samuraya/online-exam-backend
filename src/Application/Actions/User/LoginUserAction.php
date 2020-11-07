@@ -19,7 +19,7 @@ class LoginUserAction extends UserAction
 
 	protected function login()
 	{
-		//return $this->auth->login($this->request);
+		
 		return $this->userService->login($this->request);
 	}
 

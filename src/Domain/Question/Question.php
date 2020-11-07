@@ -11,9 +11,7 @@ class Question implements JsonSerializable
     private $id;
     private $examId;
     private $content;
-    private $status;
-
-         
+    private $status;         
 
     public function __construct(
             $id,
@@ -72,9 +70,6 @@ class Question implements JsonSerializable
         return null;
     }
 
-
-
-
     public function jsonSerialize()
     {
         return [
@@ -88,7 +83,7 @@ class Question implements JsonSerializable
 
     public function unset($prop):void
     {
-       // echo $this->$prop;
+       
         $this->$prop = null;
     }
     

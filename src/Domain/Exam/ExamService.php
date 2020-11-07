@@ -8,21 +8,20 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Exam\Exam;
 use App\Domain\Question\Question;
 
-
-
 use App\Domain\Exam\ExamNotFoundException;
 use App\Infrastructure\Persistence\Exam\ExamRepository;
 use \UnexpectedValueException;
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
+use App\Domain\DomainException\DomainBadRequestException;
+
 
 
 
 final class ExamService 
 {
 	
-	private $examRepository;
-	
+	private $examRepository;	
 
 	public function __construct(ExamRepository $examRepository)
 	{
@@ -34,13 +33,11 @@ final class ExamService
 		$examId = $request->getAttribute('examId')??false;
 	
 		$r = v::intVal()->validate($examId??false);
-        if(!$r) throw new \Exception(__METHOD__.": exam id must be integer ", 1);
-
+        if(!$r) throw new DomainBadRequestException("exam id must be integer");
 		$exam = $this->examRepository->updateStatus($examId);
 		return array('exam'=>$exam[0],'status_code'=>200);
 		
 	}
-
 
 	public function writeToExam(Request $request)
 	{
@@ -61,20 +58,19 @@ final class ExamService
 			$datetime,
 			$status
 		);
-// var_dump($exam); die();
 
 		$exam = $this
 			->examRepository
 			->save($exam);
+		if($exam===false){
+			throw new DomainBadRequestException("couldnot save exam");
+		}
 		$code = 200;
 		return array('exam'=>$exam[0],'status_code'=>$code);
 	}
 
-
 	public function listOfExams($isActive = 1): array
 	{
-		//status=1 is active exam, if status=0 then exam finished
-		
 		$level = $_SESSION['level'];
 		$userId = $_SESSION['user_id'];
 		
@@ -95,21 +91,21 @@ final class ExamService
 		$r = v::stringType()
 			->notEmpty()
 			->validate($data['name']??false);
-		if(!$r) throw new \Exception(__METHOD__.": Exam name must be given", 1);
+		if(!$r) throw new DomainBadRequestException("Exam name must be given");
 		
 		$r = v::alnum()
-			->length(8,8)
+			->length(7,7)
 			->validate($data['subject_id']??false);
 		
-		//if(!$r) throw new \Exception(__METHOD__.": Subject Id must be 8 digits long", 1);
+		if(!$r) throw new DomainBadRequestException("Subject Id must be 7 digits long");
 		
-		$r = v::dateTime('Y-m-d H:i:s')
+		$r = v::dateTime('Y-m-d')
 			->validate($data['datetime']??false);
-		//if(!$r) throw new \Exception(__METHOD__.": date time of Y-m-d format should be given", 1);
+		if(!$r) throw new DomainBadRequestException("date time of Y-m-d format should be given");
 		
 		$r = v::intVal()
 			->between(0, 1)
 			->validate($data['status']??1);
-		if(!$r) throw new \Exception(__METHOD__.": integer value of 0 or 1 must be given ", 1);
+		if(!$r) throw new DomainBadRequestException("integer value of 0 or 1 must be given ");
 	}
 }

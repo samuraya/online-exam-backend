@@ -13,18 +13,12 @@ class TeacherViewReportAllExams extends TeacherReportAction
     /**
      * {@inheritdoc}
      */
-    // public function __construct(TeacherReportService $teacherReportService)
-    // {
-    //   $this->teacherReportService = $teacherReportService;
-    // }
-
     protected function action(): Response
     {
        
         $reportByExam = $this
           ->teacherReportService
-          ->reportCorrectWrongAll($this->request);
-        
+          ->reportCorrectWrongAll($this->request);    
 
         return $this->respondWithData($questions); 
        

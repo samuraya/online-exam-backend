@@ -10,17 +10,7 @@ class Enroll implements JsonSerializable
    
     private $id;
     private $subjectId;
-    private $status;
-
-    // protected $mapping = [
-    //     'id'=>'id',
-    //     'name'=>'name',
-    //     'subject_id'=>'subjectId',
-    //     'datetime'=>'dateTime',
-    //     'is_active'=>'status'
-    // ];
-
-     
+    private $status;     
 
     public function __construct(
             $studentId,
@@ -54,18 +44,7 @@ class Enroll implements JsonSerializable
     {
         $this->subjectId = (int) $subjectId;
     }
-     
-    // public function getStudentId()
-    // {
-    //    if($this->studentId) return (int) $this->studentId;
-    //     return null;
-    // }
-
-    // public function setStudentId($name)
-    // {
-    //     $this->studentId = (int) $studentId;
-    // }
-
+         
     public function getStatus()
     {
         if($this->status) return (int) $this->status;
@@ -76,8 +55,6 @@ class Enroll implements JsonSerializable
     {
         $this->status = (int) $status;
     }
-
-
 
     public function jsonSerialize()
     {
@@ -92,7 +69,7 @@ class Enroll implements JsonSerializable
 
     public function unset($prop):void
     {
-       // echo $this->$prop;
+       
         $this->$prop = null;
     }
     

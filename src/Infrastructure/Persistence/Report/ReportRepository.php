@@ -7,17 +7,12 @@ use App\Infrastructure\Persistence\Finder;
 
 class ReportRepository
 {
-
-
-
 	protected $connection;
 
 	public function __construct(PDO $connection)
  	{
  		$this->connection = $connection;
  	}
-
-
 
  	public function instructorReportOneStudent($studentId, $examId, $isActive = 0)
  	{
@@ -50,8 +45,6 @@ class ReportRepository
  		}
  		return $rows;
 	}
-
-
 
 	public function joinCombineAnsweWithCorrectChoice()
 	{
@@ -89,7 +82,6 @@ class ReportRepository
 		
 		." AND exam.is_active = ?)"
 		." group by answer.user_id";
-
 
 	}
 

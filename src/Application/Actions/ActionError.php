@@ -35,7 +35,7 @@ class ActionError implements JsonSerializable
     {
         $this->type = $type;
         $this->description = $description;
-        //echo $this->type; die;
+       
     }
 
     /**
@@ -84,6 +84,6 @@ class ActionError implements JsonSerializable
             'description' => $this->description,
         ];
 
-        // return $payload;
+        
     }
 }

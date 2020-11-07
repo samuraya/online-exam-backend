@@ -30,12 +30,11 @@ class SessionMiddleware implements Middleware
         }
     }
 
-
     public function process(Request $request, RequestHandler $handler): Response
     {   
         
         if (session_status() == PHP_SESSION_ACTIVE) {
-            // exit('session already started');
+            
             return $handler->handle($request);
         }
         

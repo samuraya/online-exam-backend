@@ -72,6 +72,7 @@ class ComposerStaticInitc14b6ed4980a9a9f12955ad7a7f11eda
         ),
         'R' => 
         array (
+            'Root\\' => 5,
             'Respect\\Validation\\' => 19,
             'Respect\\Stringifier\\' => 20,
         ),
@@ -282,6 +283,10 @@ class ComposerStaticInitc14b6ed4980a9a9f12955ad7a7f11eda
         'Seld\\JsonLint\\' => 
         array (
             0 => __DIR__ . '/..' . '/seld/jsonlint/src/Seld/JsonLint',
+        ),
+        'Root\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/',
         ),
         'Respect\\Validation\\' => 
         array (

@@ -7,14 +7,15 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Domain\Subject\Subject;
 use App\Domain\Question\Question;
-
-
+use App\Domain\DomainException\DomainBadRequestException;
 
 use App\Domain\Subject\SubjectNotFoundException;
 use App\Infrastructure\Persistence\Subject\SubjectRepository;
 use \UnexpectedValueException;
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
+
+
 
 
 
@@ -28,7 +29,6 @@ final class SubjectService
 	{
 		$this->subjectRepository = $subjectRepository;
 	}
-
 
 	public function listOfSubjects()
 	{
@@ -45,10 +45,8 @@ final class SubjectService
 				
 		}
 
-		throw new \Exception(__METHOD__.": Not allowed", 401);		
+		throw new DomainBadRequestException("Not allowed");		
 	}
-
-
 
 	public function writeToSubject(Request $request)
 	{
@@ -74,7 +72,7 @@ final class SubjectService
 			->subjectRepository
 			->save($subject);
 		if($subject===false) {
-			throw new \Exception("Invalid subject", 1);			
+			throw new DomainBadRequestException("Invalid subject");			
 		}
 
 		$code = 200;
@@ -82,78 +80,23 @@ final class SubjectService
 	
 	}
 
-
 	private function validateSubject($data)
 	{
-		//var_dump($data); die;
 		$r = v::alnum()
 			->length(7,7)
 			->validate($data['subject_id']??false);
-		if(!$r) throw new \Exception(__METHOD__.": Subject Id must be 7 digits long", 1);
+		if(!$r) throw new DomainBadRequestException("Subject Id must be 7 digits long");
 
 		$r = v::stringType()
 			->notEmpty()
 			->validate($data['name']??false);
-		if(!$r) throw new \Exception(__METHOD__.": Subject name must be given", 1);
+		if(!$r) throw new DomainBadRequestException("Subject name must be given");
 
 		$r = v::alnum()
 			->length(8,8)
 			->validate($data['instructor_id']??false);
-		if(!$r) throw new \Exception(__METHOD__.": Instructor Id must be 8 digits long", 1);
+		if(!$r) throw new DomainBadRequestException("Instructor Id must be 8 digits long");
 		
 	}
-
 
 }
-
-/*
-	public function listOfExams()
-	{
-		$code = 404;
-		$exams = false;
-
-		
-		$level = $_SESSION['level'] ?? 1;
-		$userId = $_SESSION['user_id'] ?? 57212116;
-
-		if($level==0 && $userId){
-			//exit('student');
-			try{
-				$exams = $this->examRepository
-				->studentActiveExams($userId);
-				
-				} catch(ExamNotFoundException $e) {
-				return array('error'=>$e->message,'status_code'=>$code);
-			}
-
-
-		}
-		if($level==1 && $userId){
-			//exit('teacher');
-			try{
-				$exams = $this->examRepository
-				->instructorActiveExams($userId);
-				
-			} catch(SubjectNotFoundException $e) {
-				return array('error'=>$e->message,'status_code'=>$code);
-			}
-		}
-
-		if($exams) {
-			$code = 202;
-			return array('exams'=>$exams,'status_code'=>$code);
-
-		} else {
-			return array('error'=>'no relevant exam for you ','status_code'=>$code);
-		}
-		
-
-	
-	}
-
-	// public function assembleExam(Request $request):array
-	// {
-
-	// }
-*/
-

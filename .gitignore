@@ -7,6 +7,7 @@
 !/logs/README.md
 .phpunit.result.cache
 
+
 # Editor directories and files
 .idea
 *.suo
@@ -20,6 +21,17 @@
 *.svg
 *.ttf
 *.woff
+
+
+# Images and Icons #
+####################
+*.png
+*.jpg
+*.gif
+*.tiff
+*.ico
+!default.jpeg
+
 
 # Sublime Text #
 ################

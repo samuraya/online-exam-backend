@@ -6,11 +6,12 @@ namespace App\Domain\Choice;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Domain\Choice\Choice;
+use App\Domain\DomainException\DomainBadRequestException;
+
 
 
 use App\Domain\Question\QuestionNotFoundException;
 use App\Infrastructure\Persistence\Choice\ChoiceRepository;
-//use App\Infrastructure\Persistence\Exam\ChoiceWriteRepository;
 use \UnexpectedValueException;
 use Respect\Validation\Validator as v;
 
@@ -45,14 +46,14 @@ final class ChoiceService
             $questionId = $question_id;
             $content = $choice['content'];
             $status = $choice['is_correct']??false;
-        //var_dump($status)   ;            
+                   
             $choice = new Choice(
                 $id,
                 $questionId,
                 $content,
                 $status
             );
-//var_dump($choice->jsonSerialize()); die;
+
             $choice = $this->choiceRepository->save($choice);
             if(empty($choice)) return array();
                     
@@ -74,8 +75,7 @@ final class ChoiceService
         $code = 200;
         return array('choices'=>$choices,'status_code'=>$code);
 
-    }
-           
+    }       
 
 
     public function fetchAllChoicesByQuestion($args)
@@ -85,8 +85,7 @@ final class ChoiceService
        
         $choices = $this->choiceRepository
                 ->findByQuestion($questionId);
-            
-//var_dump($choices); die;
+
         $code = 200;
         return array('choices'=>$choices,'status_code'=>$code);
     }
@@ -96,12 +95,11 @@ final class ChoiceService
         $choiceId = $request->getAttribute('choiceId') ?? false;
 
         $r = v::intVal()->validate($choiceId??false);
-        if(!$r) throw new \Exception(__METHOD__.": choice id must be integer ", 1);
+        if(!$r) throw new DomainBadRequestException("choice id must be integer");
+           
         $this->choiceRepository->delete($choiceId);
 
-        return array('result'=>'deleted','status_code'=>200);   
-
-                
+        return array('result'=>'deleted','status_code'=>200);               
 
     }
    

@@ -12,23 +12,20 @@ class Answer implements JsonSerializable
     private $userId;
     private $questionId;
     private $choiceId;
-    //private $isCorrect;
-
-         
-
+    
     public function __construct(
             $id,
             $userId,
             $questionId,
             $choiceId
-           // $isCorrect,
+           
         )
     {
        $this->id = $id;
        $this->userId = $userId;
        $this->questionId = $questionId;
        $this->choiceId = $choiceId;
-       //$this->status = $status;
+       
     }
 
     public function getId()
@@ -91,8 +88,7 @@ class Answer implements JsonSerializable
 
     public function unset($prop):void
     {
-       // echo $this->$prop;
-        $this->$prop = null;
+       $this->$prop = null;
     }
     
 }

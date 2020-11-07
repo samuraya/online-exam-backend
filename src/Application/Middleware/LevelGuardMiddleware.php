@@ -14,12 +14,6 @@ class LevelGuardMiddleware implements Middleware
 {
      
 
-    //  public function __construct()
-    // {
-       
-    // }
-
-
     public function process(Request $request, RequestHandler $handler): Response
     {   
         
@@ -30,8 +24,7 @@ class LevelGuardMiddleware implements Middleware
 
        }
 
-        return $handler->handle($request);
-       
+        return $handler->handle($request);       
        
     }
 

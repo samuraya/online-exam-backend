@@ -74,9 +74,6 @@ $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
-
-//var_dump($_ENV);die;
-
 // Run App & Emit Response
 $response = $app->handle($request);
 //var_dump($container->get(LoggerInterface::class));die;

@@ -38,13 +38,7 @@ return function (ContainerBuilder $containerBuilder) {
             return $server;
 
         },
-
-        // 'flash' => function () {
-        //     return new \Slim\Flash\Messages();
-        // },
-
-
-
+        
     ]);
 
 

@@ -17,9 +17,7 @@ class AuthenticationHandler implements RequestHandlerInterface
 
 	public function __invoke($req,$res,$next)
 	{
-		echo "this is AuthenticationHandler";
-		var_dump($req);
-		die;
+		
 	}
 
 

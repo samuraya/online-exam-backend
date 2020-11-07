@@ -45,7 +45,6 @@ class Profile implements JsonSerializable
     {
        return $this->email;
     }
-
       
     public function jsonSerialize()
     {

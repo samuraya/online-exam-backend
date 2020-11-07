@@ -13,7 +13,7 @@ use \UnexpectedValueException;
 use Slim\Exception\HttpBadRequestException;
 use App\Domain\DomainException\DomainUnauthorizedException;
 use App\Domain\DomainException\DomainRecordNotFoundException;
-
+use App\Domain\DomainException\DomainBadRequestException;
 
 
 final class ProfileService 
@@ -39,12 +39,12 @@ final class ProfileService
 		$userId = $_SESSION['user_id'] ?? false;
 
 		if($userId===false) {
-			throw new \Exception("user unauthorized", 401);	
+			throw new DomainBadRequestException("user unauthorized");	
 		}
     	 // handle single input with single file upload
 	    $uploadedFile = $uploadedFile['avatar']??FALSE;
 	    if($uploadedFile===FALSE){
-	    	throw new \Exception(__METHOD__."it should be avatar image", 405);
+	    	throw new DomainBadRequestException("it should be avatar image");
 	    }
 	    if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
 	        $filename = $this->imageRepository->upload($uploadedFile);
@@ -71,7 +71,7 @@ final class ProfileService
 			return array('filename'=>$filename,'status_code'=>200);
 	    }
 
-	    throw new \Exception(__METHOD__.'error while uploading image',401);
+	    throw new DomainBadRequestException("error while uploading image");
 
 	}
 
@@ -83,7 +83,7 @@ final class ProfileService
 		$userId = $_SESSION['user_id'] ?? false;
 
 		if($userId===false) {
-			throw new \Exception("user unauthorized", 401);	
+			throw new DomainBadRequestException("user unauthorized");	
 		}
 
 		$firstName = $data['first_name'];
@@ -107,7 +107,7 @@ final class ProfileService
 		$userId = $_SESSION['user_id'] ?? FALSE;
 		
 		if($userId===false) {
-			throw new \Exception("user unauthorized", 401);
+			throw new DomainBadRequestException("user unauthorized");
 		}
 		
 		$profile = $this->profileRepository->findProfileById($userId);

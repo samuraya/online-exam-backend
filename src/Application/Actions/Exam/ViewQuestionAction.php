@@ -25,8 +25,6 @@ class ViewQuestionAction extends ExamAction
         $choices = $this->choiceService
         ->fetchAllChoicesByQuestion($this->args);
        
-        //$this->logger->info("Users list was viewed.");
-
         return $this->respondWithData($choices); 
        
     }

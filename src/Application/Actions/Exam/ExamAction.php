@@ -12,15 +12,11 @@ abstract class ExamAction extends Action
     /**
      * @var UserRepository
      */ 
-    //protected $examListRepository;
+   
 
     /**
      * @param LoggerInterface $logger
      * @param UserRepository  $userRepository
      */
-    // public function __construct(LoggerInterface $logger)
-    // {
-    //     //parent::__construct($logger);
-    //     //$this->examListRepository = $examListRepository;
-    // }
+    
 }

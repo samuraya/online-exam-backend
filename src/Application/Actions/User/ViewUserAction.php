@@ -7,10 +7,6 @@ use App\Application\Acl\DbTable as DbAuth;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Routing\RouteContext;
 
-
-//use App\Domain\User\{UserService, User};
-
-
 class ViewUserAction extends UserAction
 {
     /**
@@ -19,8 +15,6 @@ class ViewUserAction extends UserAction
 
     protected function action(): Response
     {
-       //exit("view user action controller");
-        $this->logger->info("single user was viewed.");
         return $this->respondWithData($this->viewUser());       
     }
 

@@ -10,37 +10,12 @@ use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
-//use App\Infrastructure\Persistence\User\DatabaseUserRepository;
-
-//use App\Domain\Profile\{ProfileService, Profile};
-
-//use \PDO;
-
-
-
 final class ViewProfileAction extends ProfileAction
 {
 
-	// private $validation;
-	// private $userService;
-
-	// public function __construct(UserService $userService)
-	// {
-	// 	$this->userService = $userService;
-	// }
-
 	protected function action():Response
 	{
-		//$this->logger->info("written to profile");
 		return $this->respondWithData($this->profileService->retrieveProfile($this->request));
 		 
 	}
-
-	// protected function writeToProfile()
-	// {
-
-	// 	//return $this->profileService->writeToProfile($this->request);
-
-	// }
-	
 }

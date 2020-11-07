@@ -12,17 +12,7 @@ class Exam implements JsonSerializable
     private $name;
     private $subjectId;
     private $dateTime;
-    private $status;
-
-    // protected $mapping = [
-    //     'id'=>'id',
-    //     'name'=>'name',
-    //     'subject_id'=>'subjectId',
-    //     'datetime'=>'dateTime',
-    //     'is_active'=>'status'
-    // ];
-
-     
+    private $status;     
 
     public function __construct(
             $id,
@@ -94,9 +84,6 @@ class Exam implements JsonSerializable
         return null;
     }
 
-
-
-
     public function jsonSerialize()
     {
         return [
@@ -108,11 +95,10 @@ class Exam implements JsonSerializable
             
         ];
     }
-
+    
     public function unset($prop):void
     {
-       // echo $this->$prop;
-        $this->$prop = null;
+       $this->$prop = null;
     }
     
 }

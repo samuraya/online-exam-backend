@@ -13,11 +13,6 @@ class TeacherViewAllStudentsByExam extends TeacherReportAction
     /**
      * {@inheritdoc}
      */
-    // public function __construct(TeacherReportService $teacherReportService)
-    // {
-    //   $this->teacherReportService = $teacherReportService;
-    // }
-
     protected function action(): Response
     {
        

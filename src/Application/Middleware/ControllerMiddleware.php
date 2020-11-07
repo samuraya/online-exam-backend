@@ -23,7 +23,6 @@ class ControllerMiddleware implements Middleware
 	public function process(Request $request, RequestHandler $handler): Response
 	{
 
-		// var_dump($_SESSION, $request); die;
 		$responseFactory = new ResponseFactory;
 
 		$route = RouteContext::fromRequest($request)
@@ -44,24 +43,13 @@ class ControllerMiddleware implements Middleware
             session_unset();
             session_destroy();
             setcookie('PHPSESSID', "", time() - 3600);
-            //throw new DomainUnauthorizedException("user logged out");
+           
             return $handler->handle($request);
         }
 
-
-         if($routeName === "root") {
+        if($routeName === "root") {
             return $handler->handle($request);
         }
-
-        /*
-			redirect to login if client tries to access with authorized session from different device and location
-		*/
-		// if(ClientFingerprint::process()===false) {
-            
-  //           $response = $responseFactory
-  //           	->createResponse(307,"client fingerprint mismatch");
-  //           return $response->withHeader('Location', '/api/');
-  //       }
 
         if($token){
             if($this->matchToken($token)){
@@ -77,19 +65,15 @@ class ControllerMiddleware implements Middleware
 
         $response = $responseFactory->createResponse(401,"unauthorised");
         return $response;
-        //return $response->withHeader('Location', '/api/');
-
-
+        
     }
 
-
-         public function matchToken($token)
-	    {
-	    	
-	    	$sessionToken = $_SESSION['token'] ?? date('Ymd');
-	    	
-	    	//return isset($_SESSION['token']); //when only session cookie authentication used
-	       return ($token == $sessionToken);  //use when token sent in the header
-	    }
+    public function matchToken($token)
+    {
+    	
+    	$sessionToken = $_SESSION['token'] ?? date('Ymd');    	
+    	//return isset($_SESSION['token']); //when only session cookie authentication used
+       return ($token == $sessionToken);  //use when token sent in the header
+    }
 
 }

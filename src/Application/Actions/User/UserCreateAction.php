@@ -10,37 +10,21 @@ use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
-//use App\Infrastructure\Persistence\User\DatabaseUserRepository;
-
 use App\Domain\User\{UserService, User};
-
-//use \PDO;
-
-
 
 final class UserCreateAction extends UserAction
 {
 
-	// private $validation;
-	// private $userService;
-
-	// public function __construct(UserService $userService)
-	// {
-	// 	$this->userService = $userService;
-	// }
-
 	protected function action():Response
 	{
-		$this->logger->info("created user");
+		
 		return $this->respondWithData($this->create());
 		 
 	}
 
 	protected function create()
 	{
-
 		return $this->userService->createUser($this->request);
-
 	}
 	
 }

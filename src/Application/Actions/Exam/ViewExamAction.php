@@ -25,9 +25,7 @@ class ViewExamAction extends ExamAction
        
         $questions = $this->questionService
         ->fetchAllQuestionsByExam($this->args);
-       
-        //$this->logger->info("Users list was viewed.");
-
+               
         return $this->respondWithData($questions); 
        
     }

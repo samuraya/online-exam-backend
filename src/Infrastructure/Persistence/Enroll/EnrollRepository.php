@@ -8,8 +8,6 @@ use App\Infrastructure\Persistence\BaseRepository;
 
 class EnrollRepository extends BaseRepository
 {
-
-
 	protected $connection;
 
 	public function __construct(PDO $connection)

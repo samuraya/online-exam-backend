@@ -18,19 +18,10 @@ final class UploadProfileImageAction extends ProfileAction
 
 	protected function action():Response
 	{
-		//$this->logger->info("uploaded to profile");
-		
+				
 		$responseWithImage = $this->profileService->uploadImageFile($this->request);		
 
 		return $this->respondWithData($responseWithImage);
-		
-		/*
-		return $this->response
-				->withStatus($responseWithImage['status_code'])
-				->withHeader('Content-Type', 'img/png')
-				->withBody($responseWithImage['stream']);
-		*/
-		 
 	}
 
 	
