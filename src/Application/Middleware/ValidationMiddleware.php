@@ -32,11 +32,16 @@ class ValidationMiddleware implements Middleware
         	
             $errors.='Please make sure id is at least 8 digits long!';
         }
-    
-        if(preg_match($passReg, $password)===0){
-        	
-            $errors.= "Password must be between 5 to 15 characters which contain at least one numeric digit and a specialcharacter!";
+
+        if(strlen((string)$password) < 5 || !ctype_alnum($password)) {
+            
+            $errors.='Please make sure password is at least 5 characters long!';
         }
+    //more complex password requirement
+        // if(preg_match($passReg, $password)===0){
+        	
+        //     $errors.= "Password must be between 5 to 15 characters which contain at least one numeric digit and a specialcharacter!";
+        // }
        
         $request = $request->withAttribute('validation', $errors); 
 
